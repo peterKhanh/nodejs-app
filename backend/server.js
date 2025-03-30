@@ -27,6 +27,14 @@ db.connect(function(err) {
     }
 });
 
+app.get('/danh-muc', function(req, res){
+    res.render('category/categories');
+});
+
+app.get('/them-danh-muc', function(req, res){
+    res.render('category/add-category');
+});
+
 app.get('', function(req, res){
     res.render('home');
 });
