@@ -27,8 +27,28 @@ db.connect(function(err) {
     }
 });
 
+
+
 app.get('/danh-muc', function(req, res){
-    res.render('category/categories');
+    let category = [
+        {id: 1, name : "Xôi lạc"},
+        {id: 2, name : "Xôi dừa"},
+        {id: 3, name : "Xôi ngô"},
+        {id: 4, name : "Xôi đậu"},
+        {id: 5, name : "Xôi trắng"}
+    ];
+    
+    const sql = "SELECT * FROM person";
+    db.query(sql, (err, data)=>{
+        
+    res.render('category/categories', {
+        title: "Quản lý danh mục",
+        data: data,
+        totalPage : 6
+    });
+    console.log(data);
+
+})
 });
 
 app.get('/them-danh-muc', function(req, res){
