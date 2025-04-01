@@ -1,14 +1,19 @@
 const express = require("express");
+const bodyParser = require("body-parser")
+
 const db = require("./connect-db");
 const cors = require("cors");
 
 const app = express()
+
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 app.use(express.json())
 app.use(cors())
 
-
+app.use(bodyParser.urlencoded({
+    extended:false
+}))
 
 
 
@@ -35,8 +40,13 @@ app.get('/danh-muc', function(req, res){
 })
 });
 
-app.get('/them-danh-muc', function(req, res){
+app.get('/them-danh-muc', (req, res) => {
     res.render('category/add-category');
+});
+
+app.post('/them-danh-muc', (req, res) => {
+    console.log(req.body);
+    
 });
 
 app.get('', function(req, res){
