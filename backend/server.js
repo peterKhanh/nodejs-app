@@ -1,5 +1,5 @@
 const express = require("express");
-const mysql = require("mysql");
+const db = require("./connect-db");
 const cors = require("cors");
 
 const app = express()
@@ -10,22 +10,6 @@ app.use(cors())
 
 
 
-
-const db = mysql.createConnection({
-    host: "localhost",
-    port: 3306, 
-    user: "root",
-    password: "123456",
-    database: "springmvc"
-  });
-// executing connection
-db.connect(function(err) {
-    if (err) {
-        console.log("error occurred while connecting");
-    } else {
-        console.log("connection created with mysql successfully");
-    }
-});
 
 
 
@@ -100,16 +84,20 @@ app.get('', function(req, res){
 // })
 
 
-// app.delete('/delete/:id', (req, res) =>{
-//     const sql = "Delete from person where pid = ?";
+app.get('/xoa-danh-muc/:id', (req, res) =>{
+    const sql = "Delete from person where pid = ?";
   
-//    const id = req.params.id
+   const id = req.params.id
    
-//     db.query(sql, [id], (err, data)=>{
-//         if (err) return res.json("Errors");
-//         return res.json(data)    ;
-//     })
-// })
+    db.query(sql, [id], (err, data)=>{
+        if (err) 
+            {
+                return res.json("Errors");
+            }else{
+        res.redirect("/danh-muc")    ;
+            }
+    })
+})
 
 app.listen(8081, ()=>{
     console.log("Listening: 8081");
