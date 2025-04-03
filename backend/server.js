@@ -12,46 +12,87 @@ app.use(express.json())
 app.use(cors())
 
 app.use(bodyParser.urlencoded({
-    extended:false
+    extended: false
 }))
 
 
 
 
-app.get('/danh-muc', function(req, res){
+app.get('/danh-muc', function (req, res) {
     let category = [
-        {id: 1, name : "Xôi lạc"},
-        {id: 2, name : "Xôi dừa"},
-        {id: 3, name : "Xôi ngô"},
-        {id: 4, name : "Xôi đậu"},
-        {id: 5, name : "Xôi trắng"}
+        { id: 1, name: "Xôi lạc" },
+        { id: 2, name: "Xôi dừa" },
+        { id: 3, name: "Xôi ngô" },
+        { id: 4, name: "Xôi đậu" },
+        { id: 5, name: "Xôi trắng" }
     ];
-    
-    const sql = "SELECT * FROM person";
-    db.query(sql, (err, data)=>{
-        
-    res.render('category/categories', {
-        title: "Quản lý danh mục",
-        data: data,
-        totalPage : 6
-    });
-    console.log(data);
 
-})
+    const sql = "SELECT * FROM categories";
+    db.query(sql, (err, data) => {
+
+        res.render('category/categories', {
+            title: "Quản lý danh mục",
+            data: data,
+            totalPage: 6
+        });
+        console.log(data);
+
+    })
 });
 
 app.get('/them-danh-muc', (req, res) => {
     res.render('category/add-category');
 });
 
-app.post('/them-danh-muc', (req, res) => {
-    console.log(req.body);
+
+app.get('/sua-danh-muc/:id', (req, res) => {
+    let id = req.params.id
+    console.log(id);
     
+    res.render('edit-category');
 });
 
-app.get('', function(req, res){
+
+app.post('/them-danh-muc', (req, res) => {
+    console.log(req.body.name);
+    console.log(req.body.status);
+    const sql = "INSERT INTO categories (`category_name`, `category_status`) VALUES (?)";
+    const values = [
+        req.body.name, true
+    ]
+
+    db.query(sql, [values], (err, data) => {
+        if (err) {
+            return res.json("Errors");
+        } else {
+            res.redirect("/danh-muc");
+        }
+    })
+});
+
+
+
+
+app.get('', function (req, res) {
     res.render('home');
 });
+
+
+
+app.get('/xoa-danh-muc/:id', (req, res) => {
+    const sql = "Delete from categories where id = ?";
+
+    const id = req.params.id
+
+    db.query(sql, [id], (err, data) => {
+        if (err) {
+            return res.json("Errors");
+        } else {
+            res.redirect("/danh-muc");
+        }
+    })
+})
+
 
 
 // app.get("/", (req, res)=>{
@@ -70,7 +111,7 @@ app.get('', function(req, res){
 //         req.body.password,
 //         req.body.city
 //     ]
-   
+
 //     db.query(sql, [values], (err, data)=>{
 //         if (err) return res.json("Errors");
 //         return res.json(data)    ;
@@ -94,22 +135,7 @@ app.get('', function(req, res){
 // })
 
 
-app.get('/xoa-danh-muc/:id', (req, res) =>{
-    const sql = "Delete from person where pid = ?";
-  
-   const id = req.params.id
-   
-    db.query(sql, [id], (err, data)=>{
-        if (err) 
-            {
-                return res.json("Errors");
-            }else{
-        res.redirect("/danh-muc")    ;
-            }
-    })
-})
-
-app.listen(8081, ()=>{
+app.listen(8081, () => {
     console.log("Listening: 8081");
-    
+
 })
