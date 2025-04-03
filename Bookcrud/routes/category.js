@@ -53,7 +53,7 @@ router.get('/edit/:id', function(req, res, next) {
  // res.send('Form chỉnh loại' + id);
   let sql = `SELECT * FROM categories where id=${id}`;
   db.query(sql, function(err, data) {    
-    res.render("category/edit-category", { loai:data[0]});    
+    res.render("category/edit-category", { cate:data[0]});    
   });
 
 
