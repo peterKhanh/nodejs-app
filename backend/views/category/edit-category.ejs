@@ -1,3 +1,5 @@
+<%- include('../header')%>
+<%- include('../aside')%>
 
 
     <!-- Content Wrapper. Contains page content -->
@@ -14,7 +16,7 @@
 
           </div>
           <div class="card-body">
-            <form action="/category/update" method="post">
+            <form action="/update" method="post">
               <div class="card-body">
                 <input type="hidden" value="<%= cate.id %>"  name="id">
                 <div class="form-group">
@@ -43,4 +45,4 @@
       <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
- 
+    <%- include('../footer')%>
