@@ -12,6 +12,7 @@ router.get('/', function(req, res, next) {
     { id: 5, name: "Xôi trắng" }
 ];
 console.log(category);
+res.render('home');
 res.send(category); 
 // const sql = "SELECT * FROM categories";
 // db.query(sql, (err, data) => {
