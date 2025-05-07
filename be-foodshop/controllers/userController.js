@@ -11,10 +11,10 @@ exports.getAllUser = (req, res, next) => {
     ];
     console.log(category);
     
-    const sql = "SELECT * FROM categories";
+    const sql = "SELECT * FROM users";
     db.query(sql, (err, data) => {
-        res.render('category/categories', {
-            title: "Quản lý danh mục",
+        res.render('user/users', {
+            title: "Danh sách User",
             data: data,
             totalPage: 6
         });
@@ -22,19 +22,35 @@ exports.getAllUser = (req, res, next) => {
     })
 }
 
-// Show add new category form
+
+// Show form upload
+exports.upload = (req, res, next) => {
+    res.render('user/upload');
+  }
+  
+  
+
+
+// Show add new user form
 exports.register = (req, res, next) => {
   res.render('user/register');
 }
 
 
 exports.loginform = (req, res, next) => {
-    res.render('user/dangnhap');
+    res.render('user/login');
   }
   
 exports.success = (req, res, next) => {
-   
-    res.render('user/thanhcong');
+    if (req.session.daDangNhap) {
+
+    res.render('/',{un:req.session.username});
+}
+else {       
+    req.session.back= req.originalUrl;
+
+   res.redirect("/member/dangnhap");
+}
   }
 // Action Post new Category
 exports.postNewUser = (req, res, next) => {
@@ -58,7 +74,7 @@ exports.postNewUser = (req, res, next) => {
         if (err) {
             return res.json("Errors");
         } else {
-            res.redirect("/member/thanhcong");
+            res.redirect("/member/dangnhap");
         }
     })
 }
@@ -79,14 +95,26 @@ exports.login = (req, res, next) => {
         const bcrypt = require("bcrypt");        
         let kq = bcrypt.compareSync(p, pass_fromdb);
         if (kq){ 
-            console.log("OK");                    
-            res.redirect("/member/thanhcong");
+            console.log("OK");      
+            var sess = req.session;  //initialize session variable
+            sess.daDangNhap = true;
+            sess.username = user.username;               
+//            res.redirect("/member/thanhcong");
+if (sess.back){ 
+    console.log(sess.back);
+    res.redirect(sess.back);
+}
+else {
+    res.redirect("/");
+}
         }   
         else {
             console.log("Not OK");
             res.redirect("/member/dangnhap");
         }
     });   
+
+
 
 } 
 

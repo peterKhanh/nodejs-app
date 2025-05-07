@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser")
-
+var session = require('express-session');
 const db = require("./connect-db");
 const cors = require("cors");
 var createError = require('http-errors');
@@ -28,6 +28,13 @@ app.use(bodyParser.urlencoded({
     extended: false
 }))
 
+// app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret: 'abcdefg',
+  resave: true,
+  saveUninitialized: true,
+  cookie: { maxAge: 60000 }
+}));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
