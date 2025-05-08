@@ -11,7 +11,7 @@ exports.getAllCate = (req, res, next) => {
     ];
     console.log(category);
     
-    const sql = "SELECT * FROM categories";
+    const sql = "SELECT * FROM category";
     db.query(sql, (err, data) => {
         res.render('category/categories', {
             title: "Quản lý danh mục",
@@ -31,9 +31,9 @@ exports.addNewCate = (req, res, next) => {
 exports.postNewCate = (req, res, next) => {
     console.log(req.body.name);
     console.log(req.body.status);
-    const sql = "INSERT INTO categories (`category_name`, `category_status`) VALUES (?)";
+    const sql = "INSERT INTO category (`name`, `status`) VALUES (?)";
     const values = [
-        req.body.name, true
+        req.body.name, req.body.status
     ]
 
     db.query(sql, [values], (err, data) => {
@@ -50,7 +50,7 @@ exports.editCate = (req, res, next) => {
     let id = req.params.id
     console.log(id);
       // res.send('Form chỉnh loại' + id);
-      let sql = `SELECT id, category_name, category_status FROM categories where id=${id}`;
+      let sql = `SELECT id, name, status FROM category where id=${id}`;
       console.log(sql);
       
       db.query(sql, function (err, data) {
@@ -63,15 +63,14 @@ exports.editCate = (req, res, next) => {
 // Action update Category
 exports.updateCate = (req, res, next) => {
       //nhận dữ liệu từ edit để cập nhật vào db
-      console.log(req.body.name  + "  :   "  + req.body.id);
+      console.log(req.body.name  + "  :   "  + req.body.status );
       let id = req.body.id;
-  
       let name = req.body.name;
-    
+      let status = req.body.status;
   
    //nhận dữ liệu từ edit để cập nhật vào db
        
-   db.query(`UPDATE categories SET category_name = ? WHERE id = ?`,  [name, id], 
+   db.query(`UPDATE category SET name = ? , status = ? WHERE id = ?`,  [name, status, id], 
       function(err, data) {    
           if (err) throw err;
           if (data.affectedRows==0) {
@@ -85,7 +84,7 @@ exports.updateCate = (req, res, next) => {
 
 // Action delete Category
 exports.deleteCate = (req, res, next) => {
-    const sql = "Delete from categories where id = ?";
+    const sql = "Delete from category where id = ?";
 
     const id = req.params.id
 

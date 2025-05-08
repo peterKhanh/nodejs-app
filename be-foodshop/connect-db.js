@@ -5,7 +5,7 @@ const db = mysql.createConnection({
     port: 3306, 
     user: "root",
     password: "123456",
-    database: "springbootdb"
+    database: "shop_db"
   });
 
   db.connect(function(err) {
