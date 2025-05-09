@@ -13,16 +13,6 @@ router.get('/', function(req, res, next) {
 ];
 console.log(category);
 res.render('home');
-res.send(category); 
-// const sql = "SELECT * FROM categories";
-// db.query(sql, (err, data) => {
-//     res.render('category/categories', {
-//         title: "Quản lý danh mục",
-//         data: data,
-//         totalPage: 6
-//     });
-
-// })
 });
 
 module.exports = router;
